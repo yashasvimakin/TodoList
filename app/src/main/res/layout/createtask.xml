@@ -5,31 +5,34 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <Button
-        android:id="@+id/button"
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="15dp"
-        android:layout_marginTop="15dp"
-        android:text="+"
-        android:background = "@drawable/roundedbutton"
-        />
-    <EditText android:id="@+id/et_person_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dip"
-        android:singleLine="true"
-        android:hint="Task Name"
-        android:inputType="textPersonName"
-        android:imeOptions="actionNext"/>
-
+        android:layout_height="wrap_content">
+        <EditText android:id="@+id/et_person_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dip"
+            android:singleLine="true"
+            android:hint="Task Name"
+            android:inputType="textPersonName"
+            android:imeOptions="actionNext"/>
+        <Button
+            android:id="@+id/button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="15dp"
+            android:text="+"
+            android:background = "@drawable/roundedbutton"
+            />
+    </LinearLayout>
     <EditText android:id="@+id/et_person_pin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dip"
-        android:singleLine="true"
         android:hint="Description"
         android:inputType="text"
         android:imeOptions="actionDone"/>
@@ -83,7 +86,7 @@
         android:layout_alignLeft="@+id/btn_date"
         android:layout_alignStart="@+id/btn_date" />
 
-    <Button android:layout_width="match_parent"
+    <Button android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:text="Save"

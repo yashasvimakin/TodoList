@@ -112,7 +112,7 @@ public class PersonDatabaseHelper {
 
     public Cursor verifyUniqueTask (String taskname) throws SQLiteException{
 
-        String buildSQL = "SELECT * FROM " + TABLE_NAME + " WHERE " +PERSON_TABLE_COLUMN_NAME+ " = "+taskname;
+        String buildSQL = "SELECT * FROM " + TABLE_NAME + " WHERE " +PERSON_TABLE_COLUMN_NAME+ " = '"+taskname+"'";
 
         Log.d(TAG, "verifyUniqueTask SQL: " + buildSQL);
 

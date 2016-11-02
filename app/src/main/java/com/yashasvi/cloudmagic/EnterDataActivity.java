@@ -1,14 +1,18 @@
 package com.yashasvi.cloudmagic;
 
 import android.app.DatePickerDialog;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteException;
 import android.graphics.Bitmap;
+import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -47,7 +51,7 @@ public class EnterDataActivity extends AppCompatActivity implements
     TextView txtDate, txtTime;
     private int mYear, mMonth, mDay, mHour, mMinute;
     ArrayList<Bitmap> bitmapArray;
-    String ids,name,description,reminder_date,reminder_time;
+    String ids,name,description="",reminder_date,reminder_time;
     Bundle b;
     int check = 0;
     /**
@@ -111,11 +115,11 @@ public class EnterDataActivity extends AppCompatActivity implements
         String personTime = txtTime.getText().toString();
 
         if ( personName.length() != 0 && personDescription.length() != 0 ) {
-            try {
                 Cursor cursor = databaseHelper.verifyUniqueTask(personName);
-                Toast.makeText(EnterDataActivity.this, "This Task Name Already Present!",
-                        Toast.LENGTH_LONG).show();
-            }catch ( SQLiteException e){
+                if((cursor.getCount() != 0 && check != 1 )|| description.compareTo(personDescription) == 0){
+                    Toast.makeText(EnterDataActivity.this, "This Task Name Already Present Change Description to Save!",
+                            Toast.LENGTH_LONG).show();
+                }else{
                 Intent newIntent = getIntent();
                 newIntent.putExtra("tag_person_name", personName);
                 newIntent.putExtra("tag_person_desciption", personDescription);
@@ -126,8 +130,12 @@ public class EnterDataActivity extends AppCompatActivity implements
                 this.setResult(RESULT_OK, newIntent);
                 Calendar calendar = Calendar.getInstance();
                 calendar.set(mYear, mMonth, mDay, mHour, mMinute);
-                scheduleClient.setAlarmForNotification(calendar);
-                Toast.makeText(this, "Notification set for: "+ mDay +"/"+ mMonth +"/"+ mYear+","+ mHour +"/"+ mMinute, Toast.LENGTH_SHORT).show();
+                if(personDate.length() != 0  || personTime.length() != 0){
+                    scheduleClient.setAlarmForNotification(calendar);
+                    Toast.makeText(this, "Notification set for: "+ mDay +"/"+ mMonth +"/"+ mYear+","+ mHour +"/"+ mMinute, Toast.LENGTH_SHORT).show();
+                }
+
+                //createNotification();
                 finish();
             }
 //            if(cursor.getCount() == 0){
@@ -146,12 +154,34 @@ public class EnterDataActivity extends AppCompatActivity implements
         String personDate = txtDate.getText().toString();
         String personTime = txtTime.getText().toString();
         Intent intent = new Intent(this, EnterDataActivity.class);
-        intent.putExtra("tag_person_name", personName);
-        intent.putExtra("tag_person_desciption", personDescription);
-        intent.putExtra("tag_person_date", personDate);
-        intent.putExtra("tag_person_time", personTime);
+        intent.putExtra("name", personName);
+        intent.putExtra("description", personDescription);
+        intent.putExtra("reminder_date", personDate);
+        intent.putExtra("reminder_time", personTime);
         intent.putExtra("check",check);
         //intent.putParcelableArrayListExtra("images",bitmapArray);
+        Context context = getBaseContext();
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(mYear, mMonth, mDay, mHour, mMinute);
+        //scheduleClient.setAlarmForNotification(calendar);
+        //Intent notificationIntent = new Intent(context, <the-activity-you-need-to-call>.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
+
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context)
+                .setSmallIcon(R.drawable.todo)
+                .setContentTitle(personName)
+                .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
+                .setVibrate(new long[] { 1000, 1000})
+                .setWhen(calendar.getTimeInMillis())
+                .setContentText(description)
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true);
+
+        NotificationManager mNotificationManager = (NotificationManager) context
+                .getSystemService(Context.NOTIFICATION_SERVICE);
+
+        mNotificationManager.notify(NOTIFY_ME_ID, mBuilder.build());
         }
 
     public Bitmap getResizedBitmap(Bitmap image, int maxSize) {
@@ -185,11 +215,14 @@ public class EnterDataActivity extends AppCompatActivity implements
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
                 databaseHelper = new PersonDatabaseHelper(this);
                 Bitmap converetdImage = getResizedBitmap(bitmap, 300);
+
                 // Log.d(TAG, String.valueOf(bitmap));
                 //bitmapArray.add(converetdImage);
-                databaseHelper.insertImage(editTextPersonName.getText().toString(), converetdImage);
+                databaseHelper.insertImage(editTextPersonName.getText().toString(),Bitmap.createScaledBitmap(bitmap, 300, 300, true));
                 ImageView image = new ImageView(EnterDataActivity.this);
                 image.setImageBitmap(converetdImage);
+                Toast.makeText(EnterDataActivity.this, "Image Save To your Task!",
+                        Toast.LENGTH_LONG).show();
                 linearLayout1.addView(image);
             } catch (IOException e) {
                 e.printStackTrace();

@@ -4,6 +4,7 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.media.RingtoneManager;
 import android.os.Binder;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
@@ -75,10 +76,12 @@ public class NotifyService extends Service {
                 this);
 
         // The PendingIntent to launch our activity if the user selects this notification
-        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, new Intent(this, SecondActivity.class), 0);
+        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, new Intent(this, MainActivity.class), 0);
         Notification notification = builder.setContentIntent(contentIntent)
                 .setSmallIcon(icon).setTicker(text).setWhen(time)
                 .setAutoCancel(true).setContentTitle(title)
+                .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
+                .setVibrate(new long[] { 1000, 1000})
                 .setContentText(text).build();
         // Set the info for the views that show in the notification panel.
         //notification.setLatestEventInfo(this, title, text, contentIntent);
