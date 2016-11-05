@@ -29,7 +29,7 @@ public class NotifyService extends Service {
     // Unique id to identify the notification.
     private static final int NOTIFICATION = 123;
     // Name of an intent extra we can use to identify if this service was started to create a notification
-    public static final String INTENT_NOTIFY = "com.blundell.tut.service.INTENT_NOTIFY";
+    public static final String INTENT_NOTIFY = "com.yashasvi.cloudmagic.INTENT_NOTIFY";
     // The system notification manager
     private NotificationManager mNM;
 
