@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
 
     <application
         android:allowBackup="true"
@@ -51,11 +52,19 @@
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
                 <!-- To receive broadcast with this string name -->
                 <action android:name="com.yahasvi.cloudmagic.DATA_FETCHED" />
+
             </intent-filter>
             <!-- linking up xml file of appwidget-provider to AppWidgetProvider -->
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/widgetinfo" />
+        </receiver>
+
+        <receiver android:name=".AlarmReceiver">
+            <intent-filter>
+                <action android:name="android.media.action.DISPLAY_NOTIFICATION" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </receiver>
     </application>
 

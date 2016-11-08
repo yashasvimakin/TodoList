@@ -88,7 +88,7 @@
         jumboMode="true"
         optimize="true"
         revision="24.0.3"
-        sha1="18d2fe85f9d2847f517b575ae508236d143a5ed7">
+        sha1="964640089ac9ebfc1479455e0378028e9b876bc2">
         <dex dex="/Users/makin/Documents/AndroidGather/CloudMagic/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run_4f5ff3b2b134f2a4bc24387b87e86fb3879b0e84/classes.dex" />
     </item>
     <item
@@ -115,7 +115,7 @@
         jumboMode="true"
         optimize="true"
         revision="24.0.3"
-        sha1="07ea2f6dd63dae27e203547dadc4d7cab591bbe3">
+        sha1="557f82e2c1546aa0d9592ac7b1b54c0278ff30ec">
         <dex dex="/Users/makin/Documents/AndroidGather/CloudMagic/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_113994c315dc14d1f9b852f8d1412929b5af17c5/classes.dex" />
     </item>
     <item

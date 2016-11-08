@@ -1,5 +1,6 @@
 package com.yashasvi.cloudmagic;
 
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -118,6 +119,25 @@ public class EnterDataActivity extends AppCompatActivity implements
             }
         }
     }
+    public void alarmSet(){
+        String personName = editTextPersonName.getText().toString();
+        String personDescription = editTextPersionDescription.getText().toString();
+        String personDate = txtDate.getText().toString();
+        String personTime = txtTime.getText().toString();
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(mYear, mMonth, mDay, mHour, mMinute);
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+
+        Intent notificationIntent = new Intent("android.media.action.DISPLAY_NOTIFICATION");
+        notificationIntent.addCategory("android.intent.category.DEFAULT");
+        notificationIntent.putExtra("name", personName);
+        notificationIntent.putExtra("description", personDescription);
+        notificationIntent.putExtra("reminder_date", personDate);
+        notificationIntent.putExtra("reminder_time", personTime);
+        notificationIntent.putExtra("check",check);
+        PendingIntent broadcast = PendingIntent.getBroadcast(this, 100, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), broadcast);
+    }
 
     public void onClickAdd (View btnAdd) {
 
@@ -143,7 +163,8 @@ public class EnterDataActivity extends AppCompatActivity implements
                 Calendar calendar = Calendar.getInstance();
                 calendar.set(mYear, mMonth, mDay, mHour, mMinute);
                 if(personDate.length() != 0  || personTime.length() != 0){
-                    scheduleClient.setAlarmForNotification(calendar);
+                    //scheduleClient.setAlarmForNotification(calendar);
+                    alarmSet();
                     Toast.makeText(this, "Notification set for: "+ mDay +"/"+ mMonth +"/"+ mYear+","+ mHour +"/"+ mMinute, Toast.LENGTH_SHORT).show();
                 }
 
