@@ -30,7 +30,7 @@ public class WidgetProvider extends AppWidgetProvider {
             // initializing widget layout
             RemoteViews remoteViews = new RemoteViews(context.getPackageName(),
                     R.layout.widget_layout);
-            
+
             Intent serviceIntent = new Intent(context, FetchService.class);
             serviceIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
                     appWidgetIds[i]);

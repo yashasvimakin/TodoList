@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -88,7 +89,18 @@ public class EnterDataActivity extends AppCompatActivity implements
             description =(String)b.get("description");
             reminder_date=(String)b.get("reminder_date");
             reminder_time = (String)b.get("reminder_time");
-            bitmapArray = b.getParcelableArrayList("images");
+            //bitmapArray = b.getParcelableArrayList("images");
+            Cursor cimage = databaseHelper.getimages(name);
+            Bitmap retreivedImageObject;
+            //cimage.moveToFirst();
+            if (cimage .moveToFirst()) {
+                do {
+                    byte[] image = cimage.getBlob(2);
+                    retreivedImageObject = BitmapFactory.decodeByteArray(image, 0, image.length);
+                    bitmapArray.add(retreivedImageObject);
+                    //This I use to create listlayout dynamically and show all the Titles in it
+                } while (cimage.moveToNext());
+            }
             editTextPersonName.setText(name);
             editTextPersionDescription.setText(description);
             txtDate.setText(reminder_date);
@@ -116,8 +128,8 @@ public class EnterDataActivity extends AppCompatActivity implements
 
         if ( personName.length() != 0 && personDescription.length() != 0 ) {
                 Cursor cursor = databaseHelper.verifyUniqueTask(personName);
-                if((cursor.getCount() != 0 && check != 1 )|| description.compareTo(personDescription) == 0){
-                    Toast.makeText(EnterDataActivity.this, "This Task Name Already Present Change Description to Save!",
+                if((cursor.getCount() != 0 && check != 1 )|| (description.compareTo(personDescription) == 0 && (reminder_time == null && personDate.isEmpty() && reminder_date ==null && personTime.isEmpty()))){
+                    Toast.makeText(EnterDataActivity.this, "This Task Name Already Present Change Description/Reminder to Save!",
                             Toast.LENGTH_LONG).show();
                 }else{
                 Intent newIntent = getIntent();
@@ -223,6 +235,7 @@ public class EnterDataActivity extends AppCompatActivity implements
                 image.setImageBitmap(converetdImage);
                 Toast.makeText(EnterDataActivity.this, "Image Save To your Task!",
                         Toast.LENGTH_LONG).show();
+                editTextPersonName.setFocusable(false);
                 linearLayout1.addView(image);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -234,7 +247,6 @@ public class EnterDataActivity extends AppCompatActivity implements
     public void onClick(View v) {
         if(v == button){
             String personName = editTextPersonName.getText().toString();
-            editTextPersonName.setFocusable(false);
             if(personName.length() == 0){
                 Toast.makeText(this, "Please Enter the Task Name First ", Toast.LENGTH_SHORT).show();
             }

@@ -3,8 +3,6 @@ package com.yashasvi.cloudmagic;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -15,8 +13,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
-
-import java.util.ArrayList;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -70,19 +66,19 @@ public class MainActivityFragment extends Fragment {
                 intent.putExtra("description",decription);
                 intent.putExtra("reminder_time",reminder_time);
                 intent.putExtra("reminder_date",reminder_date);
-                Cursor cimage = databaseHelper.getimages(name);
-                Bitmap retreivedImageObject;
-                //cimage.moveToFirst();
-                ArrayList<Bitmap> bitmapArray = new ArrayList<Bitmap>();
-                if (cimage .moveToFirst()) {
-                    do {
-                        byte[] image = cimage.getBlob(2);
-                        retreivedImageObject = BitmapFactory.decodeByteArray(image, 0, image.length);
-                        bitmapArray.add(retreivedImageObject);
-                        //This I use to create listlayout dynamically and show all the Titles in it
-                    } while (cimage.moveToNext());
-                }
-                intent.putParcelableArrayListExtra("images",bitmapArray);
+//                Cursor cimage = databaseHelper.getimages(name);
+//                Bitmap retreivedImageObject;
+//                //cimage.moveToFirst();
+//                ArrayList<Bitmap> bitmapArray = new ArrayList<Bitmap>();
+//                if (cimage .moveToFirst()) {
+//                    do {
+//                        byte[] image = cimage.getBlob(2);
+//                        retreivedImageObject = BitmapFactory.decodeByteArray(image, 0, image.length);
+//                        bitmapArray.add(retreivedImageObject);
+//                        //This I use to create listlayout dynamically and show all the Titles in it
+//                    } while (cimage.moveToNext());
+//                }
+                //intent.putParcelableArrayListExtra("images",bitmapArray);
                 startActivityForResult(intent, ENTER_DATA_REQUEST_CODE);
             }
         });

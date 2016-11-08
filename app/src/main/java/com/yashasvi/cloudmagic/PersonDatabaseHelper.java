@@ -121,7 +121,7 @@ public class PersonDatabaseHelper {
 
     public Cursor getAllData () {
 
-        String buildSQL = "SELECT * FROM " + TABLE_NAME + " ORDER BY date_created DESC";
+        String buildSQL = "SELECT * FROM " + TABLE_NAME + " ORDER BY date("+PERSON_TABLE_REMINDER_DATE+"),time("+PERSON_TABLE_REMINDER_TIME+")";
 
         Log.d(TAG, "getAllData SQL: " + buildSQL);
 
